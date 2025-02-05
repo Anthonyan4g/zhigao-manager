@@ -1,12 +1,16 @@
-import { createBrowserRouter, Navigate, useRoutes } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Login from '@/views/login/Login'
 import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import Error403 from '@/views/403'
 import Layout from '@/layout'
 import Dashboard from '@/views/dashboard'
-
-const routers = [
+import UserList from '@/views/system/user'
+import { DeptList } from '@/views/system/dept'
+import { MenuList } from '@/views/system/menu'
+import AuthLoader from './AuthLoader'
+import RoleList from '@/views/system/role'
+export const routers = [
   {
     path: '/',
     element: <Navigate to='/welcome' />
@@ -16,9 +20,17 @@ const routers = [
     element: <Login />
   },
   {
+    id: 'layout',
     element: <Layout />,
-    children: [{ path: '/welcome', element: <Welcome /> }],
-    children: [{ path: '/dashboard', element: <Dashboard /> }]
+    loader: AuthLoader,
+    children: [
+      { path: '/welcome', element: <Welcome /> },
+      { path: '/dashboard', element: <Dashboard /> },
+      { path: '/userList', element: <UserList /> },
+      { path: '/deptList', element: <DeptList /> },
+      { path: '/menuList', element: <MenuList /> },
+      { path: '/roleList', element: <RoleList /> }
+    ]
   },
   {
     path: '/404',

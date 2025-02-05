@@ -3,9 +3,7 @@ import { Button } from 'antd'
 import storage from '@/utils/storage'
 import { formatMoney, toLocalDate, formatDate } from '@/utils'
 import styles from './index.module.less'
-import { useBearStore } from '@/store'
 export default function Welcome() {
-  const state = useBearStore()
   return (
     <div className={styles.welcome}>
       <div className={styles.content}>

@@ -39,9 +39,10 @@ instance.interceptors.response.use(
   response => {
     const data: Result = response.data
     hideLoading()
-    if (data.code === 500001) {
+    if (data.code === 40001) {
       message.error(data.msg)
-      storage.remove('token')
+      // storage.remove('token')
+      // location.href = '/login?callback' + encodeURIComponent(location.href)
     }
     if (data.code != 0) {
       if (response.config.showError === false) {

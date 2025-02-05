@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react'
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
+
 import { Layout, Watermark } from 'antd'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useRouteLoaderData } from 'react-router-dom'
 import SideMenu from '@/components/Menu'
 import NavHeader from '@/components/NavHeader'
 import styles from './index.module.less'
-const { Header, Content, Footer, Sider } = Layout
+const { Header, Footer, Sider } = Layout
 import api from '@/api'
 import { useBearStore } from '@/store'
-
+import { IAuthLader } from '@/router/AuthLoader'
+import { searchRouter } from '@/utils'
+import { routers as router } from '@/router'
 const App: React.FC = () => {
+  const { pathname } = useLocation()
   const { updateUserInfo, collapsed } = useBearStore()
   useEffect(() => {
     getUserInfo()
@@ -18,8 +21,19 @@ const App: React.FC = () => {
     const data = await api.getUserInfo()
     updateUserInfo(data)
   }
+
+  const route = searchRouter(pathname, router)
+  if (route && route.meta?.auth == false) {
+  } else {
+    const data = useRouteLoaderData('layout') as IAuthLader
+    const staticP = ['/welcome', '/403', '/404']
+    if (!data.menuPathList.includes(pathname) && !staticP.includes(pathname)) {
+      return <Navigate to='/403' />
+    }
+  }
+
   return (
-    <Watermark content='zhigao'>
+    <Watermark content='zhigao' inherit={false}>
       <Layout>
         <Sider collapsed={collapsed}>
           <SideMenu />
